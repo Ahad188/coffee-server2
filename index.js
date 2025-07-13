@@ -9,8 +9,8 @@ const port = process.env.port || 5000;
 
 app.use(cors());
 app.use(express.json());
-console.log(process.env.user)
-console.log(process.env.password)
+// console.log(process.env.user)
+// console.log(process.env.password)
  
 //  Db_user = coffeeShop2;
 // Db_password = RH4RHOIm62x3hIc6;
@@ -41,6 +41,13 @@ async function run() {
       const result = await cursor.toArray()
       res.send(result)
     })
+     app.get("/coffee/:id", async (req, res) => {
+       const id = req.params.id;
+       console.log(id);
+       const query = { _id: new ObjectId(id) };
+       const result = await coffeeCollections2.findOne(query);
+       res.send(result);
+     });
 
     app.post('/coffee', async(req,res)=>{
       const newCoffee = req.body;
@@ -48,6 +55,7 @@ async function run() {
       const result = await coffeeCollections2.insertOne(newCoffee)
       res.send(result)
     })
+    
 
     app.delete("/coffee/:id", async(req,res)=>{
       const id = req.params.id;
